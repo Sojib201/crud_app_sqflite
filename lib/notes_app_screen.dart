@@ -37,40 +37,44 @@ class _NotesAppScreenState extends State<NotesAppScreen> {
       body: ListView.builder(
           itemCount: notesItems.length,
           itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(notesItems[index].title!),
-              subtitle: Text(notesItems[index].description!),
-              leading: IconButton(
-                onPressed: () async {
-                  final result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddNoteScreen(
-                        model: notesItems[index],
+            return Padding(
+              padding: const EdgeInsets.all(4),
+              child: ListTile(
+                tileColor: Colors.green.shade200,
+                title: Text(notesItems[index].title!),
+                subtitle: Text(notesItems[index].description!),
+                leading: IconButton(
+                  onPressed: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddNoteScreen(
+                          model: notesItems[index],
+                        ),
                       ),
-                    ),
-                  );
+                    );
 
-                  await SqfliteDatabase.updateDataInDatabase(
-                    result,
-                    result.time,
-                  );
+                    await SqfliteDatabase.updateDataInDatabase(
+                      result,
+                      result.time,
+                    );
 
-                  notesItems[index] = result;
+                    notesItems[index] = result;
 
-                  setState(() {});
-                },
-                icon: const Icon(Icons.edit),
-              ),
-              trailing: IconButton(
-                onPressed: () async {
-                  await SqfliteDatabase.deleteDataFromDatabase(
-                      notesItems[index].time!);
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.edit),
+                ),
+                trailing: IconButton(
+                  onPressed: () async {
+                    await SqfliteDatabase.deleteDataFromDatabase(
+                        notesItems[index].time!);
 
-                  notesItems.removeAt(index);
-                  setState(() {});
-                },
-                icon: const Icon(Icons.delete),
+                    notesItems.removeAt(index);
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.delete),
+                ),
               ),
             );
           }),

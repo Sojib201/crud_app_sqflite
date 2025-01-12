@@ -2,22 +2,28 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:notes_app/notes_model.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SqfliteDatabase {
   static late Database _db;
 
-  static Future<void> initialiseDatabase() async {
-    Directory applicationDirectory = await getApplicationDocumentsDirectory();
+  static Future<Database> initialiseDatabase() async {
+    // applicationDirectory = await getApplicationDocumentsDirectory();
+    //String databasePath = "${applicationDirectory.path}notes.db";
+    var dbPath = await getDatabasesPath();
+    var databasePath = join(dbPath, 'notes.db');
 
-    String databasePath = "${applicationDirectory.path}notes.db";
-
-    _db = await openDatabase(databasePath, version: 1,
-        onCreate: (db, version) async {
-      await db.execute(
-          'CREATE TABLE Notes (id INTEGER PRIMARY KEY, title TEXT, description TEXT, time INTEGER)');
-    });
+    _db = await openDatabase(
+      databasePath,
+      version: 1,
+      onCreate: (db, version) async {
+        await db.execute(
+            'CREATE TABLE Notes (id INTEGER PRIMARY KEY, title TEXT, description TEXT, time INTEGER)');
+      },
+    );
+    return _db;
   }
 
   static Future<List<NotesModel>> getDataFromDatabase() async {
