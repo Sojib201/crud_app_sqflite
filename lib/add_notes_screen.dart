@@ -44,26 +44,29 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               // print(titleController.text);
               // print(descriptionController.text);
 
-              if (widget.model == null) {
-                final map = {
-                  "title": titleController.text,
-                  "description": descriptionController.text,
-                  "time": DateTime.now().millisecondsSinceEpoch,
-                };
+              if (titleController.text.trim().isNotEmpty &&
+                  descriptionController.text.trim().isNotEmpty) {
+                if (widget.model == null) {
+                  final map = {
+                    "title": titleController.text,
+                    "description": descriptionController.text,
+                    "time": DateTime.now().millisecondsSinceEpoch,
+                  };
 
-                final notesModel = NotesModel.fromJson(map);
+                  final notesModel = NotesModel.fromJson(map);
 
-                Navigator.pop(context, notesModel);
-              } else {
-                final map = {
-                  "title": titleController.text,
-                  "description": descriptionController.text,
-                  "time": widget.model!.time!,
-                };
+                  Navigator.pop(context, notesModel);
+                } else {
+                  final map = {
+                    "title": titleController.text,
+                    "description": descriptionController.text,
+                    "time": widget.model!.time!,
+                  };
 
-                final notesModel = NotesModel.fromJson(map);
+                  final notesModel = NotesModel.fromJson(map);
 
-                Navigator.pop(context, notesModel);
+                  Navigator.pop(context, notesModel);
+                }
               }
             },
             child: const Text("Save"),

@@ -88,7 +88,7 @@ class _NotesAppScreenState extends State<NotesAppScreen> {
             ),
           );
 
-          print(result);
+          print('xxxxxxxxxxxx');
 
           if (result != null) {
             notesItems.add(result);
